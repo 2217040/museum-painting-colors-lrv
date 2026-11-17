@@ -1,5 +1,8 @@
 # Museum Painting Colors & LRV Dataset
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24303543.svg)](https://doi.org/10.5281/zenodo.24303543)
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+
 2,501 colors extracted from 414 public-domain paintings in the collections of
 **The Metropolitan Museum of Art** and **The Art Institute of Chicago**, with
 perceptual color data (CIELAB, LCh) and **Light Reflectance Value (LRV)** for
@@ -77,12 +80,15 @@ above produces from the museum's own public image file, linked in
 
 ## Citing this dataset
 
-If you use this dataset, a link to this repository and to
-[lightandpigment.com](https://lightandpigment.com/) is the preferred way to
-credit it. Suggested citation:
+Every release is archived on Zenodo and has a DOI, so the dataset can be cited
+in published work. The DOI above resolves to the most recent version; each
+individual version also has its own DOI on the Zenodo record page.
 
 > Light & Pigment, *Museum Painting Colors & LRV Dataset* (2026).
-> https://github.com/2217040/museum-painting-colors-lrv
+> Zenodo. https://doi.org/10.5281/zenodo.24303543
+
+A link to [lightandpigment.com](https://lightandpigment.com/) is always
+appreciated too, though CC0 means none is required.
 
 ## Questions / corrections
 
