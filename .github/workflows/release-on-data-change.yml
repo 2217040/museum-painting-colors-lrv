@@ -1,0 +1,78 @@
+name: Release on data change
+
+# The weekly sync step of the Light & Pigment autopilot pushes refreshed data
+# straight to main. Zenodo only mints a new DOI version when a GitHub *release*
+# is published, so this turns a data push into a release automatically.
+# The concept DOI in the README always resolves to the newest version.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'museum-painting-colors-lrv.csv'
+      - 'museum-painting-colors-lrv.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-on-data-change
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pick a tag that is not taken yet
+        id: tag
+        run: |
+          set -euo pipefail
+          base="v$(date -u +%Y.%m.%d)"
+          tag="$base"
+          n=1
+          while git rev-parse -q --verify "refs/tags/$tag" >/dev/null; do
+            n=$((n + 1))
+            tag="$base.$n"
+            if [ "$n" -gt 20 ]; then
+              echo "More than 20 releases today; something is wrong." >&2
+              exit 1
+            fi
+          done
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Count what is in the data
+        id: counts
+        run: |
+          set -euo pipefail
+          rows=$(($(wc -l < museum-painting-colors-lrv.csv) - 1))
+          paintings=$(tail -n +2 museum-painting-colors-lrv.csv | cut -d, -f1 | sort -u | wc -l)
+          echo "rows=$rows" >> "$GITHUB_OUTPUT"
+          echo "paintings=$paintings" >> "$GITHUB_OUTPUT"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag.outputs.tag }}
+          ROWS: ${{ steps.counts.outputs.rows }}
+          PAINTINGS: ${{ steps.counts.outputs.paintings }}
+        run: |
+          set -euo pipefail
+          notes=$(cat <<EOF
+          Refreshed data: $ROWS colors across $PAINTINGS source paintings.
+
+          - \`museum-painting-colors-lrv.csv\` — one row per extracted color
+          - \`museum-painting-colors-lrv.json\` — the same data grouped by painting
+
+          Released under CC0 1.0. Zenodo archives this release and gives it its own
+          DOI; the DOI in the README always resolves to the newest version.
+          EOF
+          )
+          gh release create "$TAG" \
+            --title "$TAG — refreshed data" \
+            --notes "$notes" \
+            --target "$GITHUB_SHA"
