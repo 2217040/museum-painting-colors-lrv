@@ -1,0 +1,32 @@
+{
+  "upload_type": "dataset",
+  "title": "Museum Painting Colors & LRV Dataset",
+  "creators": [
+    {
+      "name": "Light & Pigment"
+    }
+  ],
+  "description": "<p>2,501 colors extracted from 414 public-domain paintings in the collections of The Metropolitan Museum of Art and The Art Institute of Chicago, with perceptual color data (CIELAB, LCh) and Light Reflectance Value (LRV) for every color &mdash; the same metric interior and exterior paint brands print on their color cards.</p><p>LRV (0&ndash;100) measures how much light a color reflects. It is one of the few color metrics with direct real-world meaning for interior design, but public datasets that pair LRV with real, attributable source imagery are rare. This one does: every row traces back to a specific, nameable, public-domain painting, with a link to the museum's own digital image.</p><p>Provided as CSV (one row per extracted color) and JSON (grouped by painting). Built and maintained by <a href=\"https://lightandpigment.com/\">Light &amp; Pigment</a>. The dataset structure, the LRV/LAB/LCh computations and the data files themselves are released under CC0 1.0; the underlying paintings are public domain.</p>",
+  "license": "cc-zero",
+  "access_right": "open",
+  "keywords": [
+    "color",
+    "colour",
+    "paint",
+    "LRV",
+    "light reflectance value",
+    "CIELAB",
+    "color extraction",
+    "interior design",
+    "art history",
+    "public domain art",
+    "open data"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://lightandpigment.com/",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
